@@ -25,6 +25,10 @@ class MainWindow(tk.Tk):
         mount_points = {string.split()[0]: string.split()[1].replace("\\040", " ") for string in open('/proc/mounts')}
         for device in sorted(devices):
             device_ata = atapt.atapt('/dev/{}'.format(device))
+            try:
+                device_ata.checkSense()
+            except atapt.senseError:
+                continue
             free = 0
             total = 0
             for partition in os.listdir("/sys/block/{}/".format(device)):

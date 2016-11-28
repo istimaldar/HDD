@@ -279,7 +279,7 @@ class atapt:
                 raise sgioFalied("fcntl.ioctl falied")
         self.duration = (time.time() - startTime) * 1000
         #self.checkSense()
-        self.ata_support = self.supported_ata(buf[80])
+        self.ata_support = self.supported_ata(buf[136])
         self.mem_support = self.supported_mem(buf[99])
         self.serial = swapString(buf[20:40])
         self.firmware = swapString(buf[46:53])
@@ -317,8 +317,8 @@ class atapt:
         return supported
 
     def supported_mem(self, data):
-        supported = ['PIO']
-        suppotred_mem = {1: "DMA", 2: "LBA"}
+        supported = []
+        suppotred_mem = {1: "DMA", 2: "PIO"}
         for key in suppotred_mem:
             if ord(data) & key:
                 supported.append(suppotred_mem[key])
